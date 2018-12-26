@@ -3,13 +3,12 @@
 
 package robot
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
 import (
-	context "golang.org/x/net/context"
+	context "context"
+	fmt "fmt"
+	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
+	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -21,7 +20,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type RobotServiceRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -33,16 +32,17 @@ func (m *RobotServiceRequest) Reset()         { *m = RobotServiceRequest{} }
 func (m *RobotServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*RobotServiceRequest) ProtoMessage()    {}
 func (*RobotServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_robot_12b827167ffdfc5a, []int{0}
+	return fileDescriptor_9d65d06a1694be51, []int{0}
 }
+
 func (m *RobotServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RobotServiceRequest.Unmarshal(m, b)
 }
 func (m *RobotServiceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_RobotServiceRequest.Marshal(b, m, deterministic)
 }
-func (dst *RobotServiceRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RobotServiceRequest.Merge(dst, src)
+func (m *RobotServiceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RobotServiceRequest.Merge(m, src)
 }
 func (m *RobotServiceRequest) XXX_Size() int {
 	return xxx_messageInfo_RobotServiceRequest.Size(m)
@@ -63,16 +63,17 @@ func (m *RobotServiceResponse) Reset()         { *m = RobotServiceResponse{} }
 func (m *RobotServiceResponse) String() string { return proto.CompactTextString(m) }
 func (*RobotServiceResponse) ProtoMessage()    {}
 func (*RobotServiceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_robot_12b827167ffdfc5a, []int{1}
+	return fileDescriptor_9d65d06a1694be51, []int{1}
 }
+
 func (m *RobotServiceResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RobotServiceResponse.Unmarshal(m, b)
 }
 func (m *RobotServiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_RobotServiceResponse.Marshal(b, m, deterministic)
 }
-func (dst *RobotServiceResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RobotServiceResponse.Merge(dst, src)
+func (m *RobotServiceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RobotServiceResponse.Merge(m, src)
 }
 func (m *RobotServiceResponse) XXX_Size() int {
 	return xxx_messageInfo_RobotServiceResponse.Size(m)
@@ -86,6 +87,19 @@ var xxx_messageInfo_RobotServiceResponse proto.InternalMessageInfo
 func init() {
 	proto.RegisterType((*RobotServiceRequest)(nil), "robot.RobotServiceRequest")
 	proto.RegisterType((*RobotServiceResponse)(nil), "robot.RobotServiceResponse")
+}
+
+func init() { proto.RegisterFile("robot/robot.proto", fileDescriptor_9d65d06a1694be51) }
+
+var fileDescriptor_9d65d06a1694be51 = []byte{
+	// 111 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0xca, 0x4f, 0xca,
+	0x2f, 0xd1, 0x07, 0x93, 0x7a, 0x05, 0x45, 0xf9, 0x25, 0xf9, 0x42, 0xac, 0x60, 0x8e, 0x92, 0x28,
+	0x97, 0x70, 0x10, 0x88, 0x11, 0x9c, 0x5a, 0x54, 0x96, 0x99, 0x9c, 0x1a, 0x94, 0x5a, 0x58, 0x9a,
+	0x5a, 0x5c, 0xa2, 0x24, 0xc6, 0x25, 0x82, 0x2a, 0x5c, 0x5c, 0x90, 0x9f, 0x57, 0x9c, 0x6a, 0xe4,
+	0xc5, 0xc5, 0x0a, 0x16, 0x17, 0x72, 0xe4, 0x62, 0xf1, 0xcd, 0x2f, 0x4b, 0x15, 0x92, 0xd2, 0x83,
+	0x18, 0x8a, 0xc5, 0x10, 0x29, 0x69, 0xac, 0x72, 0x10, 0x93, 0x94, 0x18, 0x92, 0xd8, 0xc0, 0x0e,
+	0x31, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x2d, 0xd4, 0x89, 0xd7, 0x9d, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -158,17 +172,4 @@ var _Robot_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "robot/robot.proto",
-}
-
-func init() { proto.RegisterFile("robot/robot.proto", fileDescriptor_robot_12b827167ffdfc5a) }
-
-var fileDescriptor_robot_12b827167ffdfc5a = []byte{
-	// 111 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0xca, 0x4f, 0xca,
-	0x2f, 0xd1, 0x07, 0x93, 0x7a, 0x05, 0x45, 0xf9, 0x25, 0xf9, 0x42, 0xac, 0x60, 0x8e, 0x92, 0x28,
-	0x97, 0x70, 0x10, 0x88, 0x11, 0x9c, 0x5a, 0x54, 0x96, 0x99, 0x9c, 0x1a, 0x94, 0x5a, 0x58, 0x9a,
-	0x5a, 0x5c, 0xa2, 0x24, 0xc6, 0x25, 0x82, 0x2a, 0x5c, 0x5c, 0x90, 0x9f, 0x57, 0x9c, 0x6a, 0xe4,
-	0xc5, 0xc5, 0x0a, 0x16, 0x17, 0x72, 0xe4, 0x62, 0xf1, 0xcd, 0x2f, 0x4b, 0x15, 0x92, 0xd2, 0x83,
-	0x18, 0x8a, 0xc5, 0x10, 0x29, 0x69, 0xac, 0x72, 0x10, 0x93, 0x94, 0x18, 0x92, 0xd8, 0xc0, 0x0e,
-	0x31, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x2d, 0xd4, 0x89, 0xd7, 0x9d, 0x00, 0x00, 0x00,
 }

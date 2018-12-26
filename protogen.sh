@@ -46,8 +46,7 @@ function check() {
     which protoc-gen-lint > /dev/null
     if [ $? -ne 0 ]; then
         error "protoc-gen-lint is missing, please install them at https://github.com/ckaznocha/protoc-gen-lint"
-        ok "installing with 'go get github.com/ckaznocha/protoc-gen-lint'"
-        install_protoc-gen-lint
+        exit 1
     else
         ok "protoc-gen-lint is installed properly"
     fi
@@ -55,13 +54,7 @@ function check() {
     which protoc-gen-go > /dev/null
     if [ $? -ne 0 ]; then
         error "protoc-gen-go is missing, please install v1.2.0 at https://github.com/golang/protobuf"
-        error "Please ensure v1.2.0 is installed instead of master"
-        cat << EOF
-            GIT_TAG="v1.2.0" # change as needed
-            go get -d -u github.com/golang/protobuf/protoc-gen-go
-            git -C "$(go env GOPATH)"/src/github.com/golang/protobuf checkout $GIT_TAG
-            go install github.com/golang/protobuf/protoc-gen-go
-EOF
+        warn "please ensure v1.2.0 is installed instead of master"
         exit 1
     else
         ok "protoc-gen-go is installed properly"
