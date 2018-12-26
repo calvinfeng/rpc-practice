@@ -69,7 +69,7 @@ function lint() {
     --plugin=protoc-gen-lint=${GOPATH}/bin/protoc-gen-lint \
     -I ${PROTOS} \
     --lint_out=sort_imports:. \
-    ${PROTOS}/**/*.proto
+    ${PROTOS}/*/**.proto
 }
 
 function compile() {

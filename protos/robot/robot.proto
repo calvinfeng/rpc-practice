@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package robot;
 
-message RobotServiceRequest {
+message MoveRequest {
 
 }
 
-message RobotServiceResponse {
+message MoveResponse {
 
 }
 
-service Robot {
-    rpc Move(RobotServiceRequest) returns (RobotServiceResponse) {}
+service MovementService {
+  rpc Move(MoveRequest) returns (MoveResponse) {}
 }
