@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package robot;
+
+message RobotServiceRequest {
+
+}
+
+message RobotServiceResponse {
+
+}
+
+service Robot {
+    rpc Move(RobotServiceRequest) returns (RobotServiceResponse) {}
+}
