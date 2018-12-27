@@ -3,12 +3,13 @@
 
 package robot
 
+import proto "github.com/golang/protobuf/proto"
+import fmt "fmt"
+import math "math"
+
 import (
-	context "context"
-	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
+	context "golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
-	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -20,29 +21,77 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type MoveRequest struct {
+type Position struct {
+	X                    float64  `protobuf:"fixed64,1,opt,name=x,proto3" json:"x,omitempty"`
+	Y                    float64  `protobuf:"fixed64,2,opt,name=y,proto3" json:"y,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Position) Reset()         { *m = Position{} }
+func (m *Position) String() string { return proto.CompactTextString(m) }
+func (*Position) ProtoMessage()    {}
+func (*Position) Descriptor() ([]byte, []int) {
+	return fileDescriptor_robot_021271b7dcc70e85, []int{0}
+}
+func (m *Position) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Position.Unmarshal(m, b)
+}
+func (m *Position) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Position.Marshal(b, m, deterministic)
+}
+func (dst *Position) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Position.Merge(dst, src)
+}
+func (m *Position) XXX_Size() int {
+	return xxx_messageInfo_Position.Size(m)
+}
+func (m *Position) XXX_DiscardUnknown() {
+	xxx_messageInfo_Position.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Position proto.InternalMessageInfo
+
+func (m *Position) GetX() float64 {
+	if m != nil {
+		return m.X
+	}
+	return 0
+}
+
+func (m *Position) GetY() float64 {
+	if m != nil {
+		return m.Y
+	}
+	return 0
+}
+
+type MoveRequest struct {
+	Robot                string    `protobuf:"bytes,1,opt,name=robot,proto3" json:"robot,omitempty"`
+	Origin               *Position `protobuf:"bytes,2,opt,name=origin,proto3" json:"origin,omitempty"`
+	Target               *Position `protobuf:"bytes,3,opt,name=target,proto3" json:"target,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
 }
 
 func (m *MoveRequest) Reset()         { *m = MoveRequest{} }
 func (m *MoveRequest) String() string { return proto.CompactTextString(m) }
 func (*MoveRequest) ProtoMessage()    {}
 func (*MoveRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9d65d06a1694be51, []int{0}
+	return fileDescriptor_robot_021271b7dcc70e85, []int{1}
 }
-
 func (m *MoveRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MoveRequest.Unmarshal(m, b)
 }
 func (m *MoveRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_MoveRequest.Marshal(b, m, deterministic)
 }
-func (m *MoveRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MoveRequest.Merge(m, src)
+func (dst *MoveRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MoveRequest.Merge(dst, src)
 }
 func (m *MoveRequest) XXX_Size() int {
 	return xxx_messageInfo_MoveRequest.Size(m)
@@ -53,7 +102,29 @@ func (m *MoveRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MoveRequest proto.InternalMessageInfo
 
+func (m *MoveRequest) GetRobot() string {
+	if m != nil {
+		return m.Robot
+	}
+	return ""
+}
+
+func (m *MoveRequest) GetOrigin() *Position {
+	if m != nil {
+		return m.Origin
+	}
+	return nil
+}
+
+func (m *MoveRequest) GetTarget() *Position {
+	if m != nil {
+		return m.Target
+	}
+	return nil
+}
+
 type MoveResponse struct {
+	Distance             float64  `protobuf:"fixed64,1,opt,name=distance,proto3" json:"distance,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -63,17 +134,16 @@ func (m *MoveResponse) Reset()         { *m = MoveResponse{} }
 func (m *MoveResponse) String() string { return proto.CompactTextString(m) }
 func (*MoveResponse) ProtoMessage()    {}
 func (*MoveResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9d65d06a1694be51, []int{1}
+	return fileDescriptor_robot_021271b7dcc70e85, []int{2}
 }
-
 func (m *MoveResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MoveResponse.Unmarshal(m, b)
 }
 func (m *MoveResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_MoveResponse.Marshal(b, m, deterministic)
 }
-func (m *MoveResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MoveResponse.Merge(m, src)
+func (dst *MoveResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MoveResponse.Merge(dst, src)
 }
 func (m *MoveResponse) XXX_Size() int {
 	return xxx_messageInfo_MoveResponse.Size(m)
@@ -84,23 +154,17 @@ func (m *MoveResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MoveResponse proto.InternalMessageInfo
 
-func init() {
-	proto.RegisterType((*MoveRequest)(nil), "robot.MoveRequest")
-	proto.RegisterType((*MoveResponse)(nil), "robot.MoveResponse")
+func (m *MoveResponse) GetDistance() float64 {
+	if m != nil {
+		return m.Distance
+	}
+	return 0
 }
 
-func init() { proto.RegisterFile("robot/robot.proto", fileDescriptor_9d65d06a1694be51) }
-
-var fileDescriptor_9d65d06a1694be51 = []byte{
-	// 113 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0xca, 0x4f, 0xca,
-	0x2f, 0xd1, 0x07, 0x93, 0x7a, 0x05, 0x45, 0xf9, 0x25, 0xf9, 0x42, 0xac, 0x60, 0x8e, 0x12, 0x2f,
-	0x17, 0xb7, 0x6f, 0x7e, 0x59, 0x6a, 0x50, 0x6a, 0x61, 0x69, 0x6a, 0x71, 0x89, 0x12, 0x1f, 0x17,
-	0x0f, 0x84, 0x5b, 0x5c, 0x90, 0x9f, 0x57, 0x9c, 0x6a, 0xe4, 0xc2, 0xc5, 0x0f, 0xe2, 0xe7, 0xa6,
-	0xe6, 0x95, 0x04, 0xa7, 0x16, 0x95, 0x65, 0x26, 0xa7, 0x0a, 0x19, 0x72, 0xb1, 0x80, 0x84, 0x84,
-	0x84, 0xf4, 0x20, 0xc6, 0x21, 0x69, 0x97, 0x12, 0x46, 0x11, 0x83, 0x98, 0xa1, 0xc4, 0x90, 0xc4,
-	0x06, 0xb6, 0xd2, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x22, 0x4d, 0xa5, 0x7f, 0x87, 0x00, 0x00,
-	0x00,
+func init() {
+	proto.RegisterType((*Position)(nil), "robot.Position")
+	proto.RegisterType((*MoveRequest)(nil), "robot.MoveRequest")
+	proto.RegisterType((*MoveResponse)(nil), "robot.MoveResponse")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -173,4 +237,24 @@ var _MovementService_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "robot/robot.proto",
+}
+
+func init() { proto.RegisterFile("robot/robot.proto", fileDescriptor_robot_021271b7dcc70e85) }
+
+var fileDescriptor_robot_021271b7dcc70e85 = []byte{
+	// 211 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0xca, 0x4f, 0xca,
+	0x2f, 0xd1, 0x07, 0x93, 0x7a, 0x05, 0x45, 0xf9, 0x25, 0xf9, 0x42, 0xac, 0x60, 0x8e, 0x92, 0x1a,
+	0x17, 0x47, 0x40, 0x7e, 0x71, 0x66, 0x49, 0x66, 0x7e, 0x9e, 0x10, 0x0f, 0x17, 0x63, 0x85, 0x04,
+	0xa3, 0x02, 0xa3, 0x06, 0x63, 0x10, 0x63, 0x05, 0x88, 0x57, 0x29, 0xc1, 0x04, 0xe1, 0x55, 0x2a,
+	0x95, 0x72, 0x71, 0xfb, 0xe6, 0x97, 0xa5, 0x06, 0xa5, 0x16, 0x96, 0xa6, 0x16, 0x97, 0x08, 0x89,
+	0x70, 0x41, 0xf4, 0x83, 0x95, 0x73, 0x06, 0x41, 0x38, 0x42, 0xea, 0x5c, 0x6c, 0xf9, 0x45, 0x99,
+	0xe9, 0x99, 0x79, 0x60, 0x7d, 0xdc, 0x46, 0xfc, 0x7a, 0x10, 0x1b, 0x61, 0x36, 0x04, 0x41, 0xa5,
+	0x41, 0x0a, 0x4b, 0x12, 0x8b, 0xd2, 0x53, 0x4b, 0x24, 0x98, 0x71, 0x28, 0x84, 0x48, 0x2b, 0x69,
+	0x71, 0xf1, 0x40, 0xac, 0x2d, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e, 0x15, 0x92, 0xe2, 0xe2, 0x48, 0xc9,
+	0x2c, 0x2e, 0x49, 0xcc, 0x4b, 0x4e, 0x85, 0xba, 0x14, 0xce, 0x37, 0x72, 0xe1, 0xe2, 0x07, 0xa9,
+	0xcd, 0x4d, 0xcd, 0x2b, 0x09, 0x4e, 0x2d, 0x2a, 0xcb, 0x4c, 0x4e, 0x15, 0x32, 0xe4, 0x62, 0x01,
+	0x09, 0x09, 0x09, 0x41, 0xcd, 0x47, 0xf2, 0x82, 0x94, 0x30, 0x8a, 0x18, 0xc4, 0x7c, 0x25, 0x86,
+	0x24, 0x36, 0x70, 0xf0, 0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x3c, 0xe0, 0x52, 0x2c, 0x33,
+	0x01, 0x00, 0x00,
 }

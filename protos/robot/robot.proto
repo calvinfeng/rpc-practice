@@ -2,12 +2,19 @@ syntax = "proto3";
 
 package robot;
 
-message MoveRequest {
+message Position {
+  double x = 1;
+  double y = 2;
+} 
 
+message MoveRequest {
+  string robot = 1;
+  Position origin = 2;
+  Position target = 3; 
 }
 
 message MoveResponse {
-
+  double distance = 1;
 }
 
 service MovementService {

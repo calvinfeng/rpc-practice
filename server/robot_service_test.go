@@ -50,14 +50,14 @@ func TestRobotMovementService(t *testing.T) {
 	port, addr := GetFreeAddr(t)
 	SetupGRPCServer(t, addr)
 
-	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithInsecure())
-
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	hostname := "localhost"
 	url := fmt.Sprintf("%s:%d", hostname, port)
+
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithInsecure())
 
 	conn, err := grpc.DialContext(ctx, url, opts...)
 	if err != nil {
@@ -66,10 +66,23 @@ func TestRobotMovementService(t *testing.T) {
 	defer conn.Close()
 
 	client := robot.NewMovementServiceClient(conn)
-	res, err := client.Move(ctx, &robot.MoveRequest{})
+	res, err := client.Move(ctx, &robot.MoveRequest{
+		Robot: "freight100-001",
+		Origin: &robot.Position{
+			X: 0,
+			Y: 0,
+		},
+		Target: &robot.Position{
+			X: 15,
+			Y: 15,
+		},
+	})
+
 	if err != nil {
 		t.Error(err)
 	}
 
-	fmt.Println(res)
+	if res.Distance == 0 {
+		t.Error("distance should not be zero valued")
+	}
 }
