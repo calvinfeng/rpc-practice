@@ -5,6 +5,8 @@ import (
 	"net"
 	"rpc-practice/protogens/go/robot"
 	"rpc-practice/server"
+	"rpc-practice/taskflow"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -15,13 +17,24 @@ func RunGRPCServer() error {
 		return err
 	}
 
-	s := grpc.NewServer()
-	robot.RegisterMovementServiceServer(s, &server.RobotMovementService{})
+	gRPCServer := grpc.NewServer()
+	robot.RegisterNavigationServer(gRPCServer, server.NewRobotNavigationServer())
 
-	go s.Serve(lis)
+	go gRPCServer.Serve(lis)
+
+	fmt.Println("Let's do gRPC")
+	time.Sleep(10 * time.Second)
+
+	gRPCServer.Stop()
+
 	return nil
 }
 
 func main() {
-	fmt.Println("Let's do gRPC")
+	todo := taskflow.NewTodo("things to do tonight")
+	t1 := todo.AddTask("shower")
+	t2 := todo.AddTask("dry hair")
+	todo.AddRelation(t1, t2)
+
+	todo.Traverse()
 }

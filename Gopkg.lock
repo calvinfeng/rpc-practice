@@ -27,6 +27,12 @@
 
 [[projects]]
   branch = "master"
+  name = "gonum.org/v1/gonum"
+  packages = ["blas","blas/blas64","blas/gonum","floats","graph","graph/internal/ordered","graph/internal/set","graph/internal/uid","graph/iterator","graph/simple","internal/asm/c128","internal/asm/f32","internal/asm/f64","internal/math32","lapack","lapack/gonum","lapack/lapack64","mat"]
+  revision = "d9936c37d4be019d7a9c56525078beb0bceb90e8"
+
+[[projects]]
+  branch = "master"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   revision = "bd9b4fb69e2ffd37621a6caa54dcbead29b546f2"
@@ -40,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1867ebbb6858846d117e4880585a4ed8013f37d1f9dfe04e3fde92ffd24c681e"
+  inputs-digest = "a5367390c736217f0aef82efbe958e0f22ce8b969f461170e90107e50f454816"
   solver-name = "gps-cdcl"
   solver-version = 1

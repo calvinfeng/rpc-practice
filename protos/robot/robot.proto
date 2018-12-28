@@ -7,16 +7,15 @@ message Position {
   double y = 2;
 } 
 
-message MoveRequest {
+message NavRequest {
   string robot = 1;
-  Position origin = 2;
-  Position target = 3; 
+  Position destination = 3; 
 }
 
-message MoveResponse {
-  double distance = 1;
+message NavResponse {
+  double distance_traveled = 1;
 }
 
-service MovementService {
-  rpc Move(MoveRequest) returns (MoveResponse) {}
+service Navigation {
+  rpc Navigate(NavRequest) returns (NavResponse) {}
 }

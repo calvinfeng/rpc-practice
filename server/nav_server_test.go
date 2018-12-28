@@ -41,7 +41,7 @@ func SetupGRPCServer(t *testing.T, addr string) {
 	}
 
 	s := grpc.NewServer()
-	robot.RegisterMovementServiceServer(s, &RobotMovementService{})
+	robot.RegisterNavigationServer(s, NewRobotNavigationServer())
 
 	go s.Serve(lis)
 }
@@ -65,24 +65,43 @@ func TestRobotMovementService(t *testing.T) {
 	}
 	defer conn.Close()
 
-	client := robot.NewMovementServiceClient(conn)
-	res, err := client.Move(ctx, &robot.MoveRequest{
-		Robot: "freight100-001",
-		Origin: &robot.Position{
-			X: 0,
-			Y: 0,
-		},
-		Target: &robot.Position{
-			X: 15,
-			Y: 15,
-		},
+	client := robot.NewNavigationClient(conn)
+
+	t.Run("NavigateSuccess", func(t *testing.T) {
+		res, err := client.Navigate(ctx, &robot.NavRequest{
+			Robot: "freight100-001",
+			Destination: &robot.Position{
+				X: 15,
+				Y: 15,
+			},
+		})
+
+		if err != nil {
+			t.Error(err)
+		}
+
+		if res.DistanceTraveled == 0 {
+			t.Error("distance should not be zero valued")
+		}
 	})
 
-	if err != nil {
-		t.Error(err)
-	}
+	t.Run("NavigateFail", func(t *testing.T) {
+		res, err := client.Navigate(ctx, &robot.NavRequest{
+			Robot: "freight100-002",
+			Destination: &robot.Position{
+				X: 15,
+				Y: 15,
+			},
+		})
 
-	if res.Distance == 0 {
-		t.Error("distance should not be zero valued")
-	}
+		if err == nil {
+			t.Error("gRPC response should return an error")
+		}
+
+		fmt.Println(err)
+
+		if res != nil {
+			t.Error("gRPC response should be nil")
+		}
+	})
 }
