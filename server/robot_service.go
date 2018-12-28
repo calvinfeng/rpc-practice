@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"math"
-	"rpc-practice/cprotos/golang/robot"
+	"rpc-practice/protogens/go/robot"
 )
 
 type RobotMovementService struct{}

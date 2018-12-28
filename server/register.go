@@ -1,7 +1,7 @@
 package server
 
 import (
-	"rpc-practice/cprotos/golang/robot"
+	"rpc-practice/protogens/go/robot"
 
 	"google.golang.org/grpc"
 )

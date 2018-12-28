@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"rpc-practice/cprotos/golang/robot"
+	"rpc-practice/protogens/go/robot"
 	"testing"
 	"time"
 
