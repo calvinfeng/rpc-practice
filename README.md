@@ -1,30 +1,24 @@
-# gRPC
+# gRPC (Google Remote Procedure Calls)
 
 ## Use Docker
 
 If you use docker, then you can skip all the steps below.
 
-```bash    
-docker run -v $(pwd):/defs namely/protoc-all:1.17_0 -d protos -l go -o protogens/go/
-```
+    docker run -v $(pwd):/defs namely/protoc-all:1.17_0 -d protos -l go -o protogens/go/
 
 ## Install
 
 ### gRPC-Go
 
-```bash
-go get -u google.golang.org/grpc
-```
+    go get -u google.golang.org/grpc
 
 ### Protocol Buffers
 
-I prefer to use pre-built binaries. Just navigate to protobuf [release page][1] and download a 
-binary for your OS. I am using Linux so I downloaded `protoc-3.6.1-linux-x86_64.zip`. Then place the
-binary into your `/usr/local/bin`.
+I prefer to use pre-built binaries. Just navigate to protobuf [release page][1] and download a binary
+for your OS. I am using Linux so I downloaded `protoc-3.6.1-linux-x86_64.zip`. Then place the binary
+into your `/usr/local/bin`.
 
-```bash
-sudo unzip -o protoc-3.6.1-linux-x86_64.zip -d /usr/local bin/protoc
-```
+    sudo unzip -o protoc-3.6.1-linux-x86_64.zip -d /usr/local bin/protoc
 
 ### Go Support
 
@@ -41,9 +35,7 @@ go install github.com/golang/protobuf/protoc-gen-go
 
 This is a useful tool for linting protobuf code.
 
-```bash
-go get github.com/ckaznocha/protoc-gen-lint
-```
+    go get github.com/ckaznocha/protoc-gen-lint
 
 ### Script
 
@@ -84,7 +76,7 @@ function install_protoc-gen-lint() {
 
 function check() {
     info "checking prerequisites..."
-    
+
     which protoc > /dev/null
     if [ $? -ne 0 ]; then
         error "protoc is missing, please install them at https://github.com/google/protobuf"
@@ -108,7 +100,7 @@ function check() {
         exit 1
     else
         ok "protoc-gen-go is installed properly"
-    fi   
+    fi
 }
 
 function lint() {
@@ -164,5 +156,3 @@ main $@
 ```
 
 [1]: https://github.com/protocolbuffers/protobuf/releases
-
-

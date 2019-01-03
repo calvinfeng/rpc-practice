@@ -34,7 +34,12 @@ func main() {
 	todo := taskflow.NewTodo("things to do tonight")
 	t1 := todo.AddTask("shower")
 	t2 := todo.AddTask("dry hair")
-	todo.AddRelation(t1, t2)
+	t3 := todo.AddTask("brush teeth")
+
+	todo.AddRelation(t1, t2, 1.25)
+	todo.AddRelation(t3, t2, 2)
 
 	todo.Traverse()
+	todo.Sort()
+	todo.Cycles()
 }
