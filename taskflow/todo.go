@@ -23,16 +23,23 @@ type Todo struct {
 }
 
 // AddTask adds a new task node to a todo list.
-func (t *Todo) AddTask(name string) graph.Node {
-	node := &Task{t.graph.NewNode(), name}
+func (t *Todo) AddTask(n string) graph.Node {
+	ctype := And
+	name := n
+	outcome := make(chan ExecutionResult)
+	ready := make(chan int64)
+
+	node := &Task{t.graph.NewNode(), ctype, name, ready, outcome}
 	t.graph.AddNode(node)
 
 	return node
 }
 
 // AddRelation creates dependency relationship between two tasks.
-func (t *Todo) AddRelation(from, to graph.Node, strength float64) graph.Edge {
-	edge := &Relation{t.graph.NewEdge(from, to), strength}
+func (t *Todo) AddRelation(from, to graph.Node, et EdgeType) graph.Edge {
+	etype := et
+
+	edge := &Relation{t.graph.NewEdge(from, to), etype}
 	t.graph.SetEdge(edge)
 
 	return edge
@@ -40,20 +47,8 @@ func (t *Todo) AddRelation(from, to graph.Node, strength float64) graph.Edge {
 
 // Traverse will walk through nodes.
 func (t *Todo) Traverse() error {
-	graph := make(map[int64][]int64)
+	adj := t.adjacency()
 	visited := make(map[int64]struct{})
-
-	nodeit := t.graph.Nodes()
-	for nodeit.Next() {
-		n := nodeit.Node()
-		graph[n.ID()] = []int64{}
-	}
-
-	edgeit := t.graph.Edges()
-	for edgeit.Next() {
-		e := edgeit.Edge()
-		graph[e.From().ID()] = append(graph[e.From().ID()], e.To().ID())
-	}
 
 	// Breadth first traversal
 	queue := []int64{}
@@ -76,10 +71,28 @@ func (t *Todo) Traverse() error {
 
 		visited[id] = struct{}{}
 		fmt.Printf("working on task: %s\n", task.name)
-		queue = append(queue, graph[id]...)
+		queue = append(queue, adj[id]...)
 	}
 
 	return nil
+}
+
+func (t *Todo) adjacency() map[int64][]int64 {
+	adj := make(map[int64][]int64)
+
+	nodeit := t.graph.Nodes()
+	for nodeit.Next() {
+		n := nodeit.Node()
+		adj[n.ID()] = []int64{}
+	}
+
+	edgeit := t.graph.Edges()
+	for edgeit.Next() {
+		e := edgeit.Edge()
+		adj[e.From().ID()] = append(adj[e.From().ID()], e.To().ID())
+	}
+
+	return adj
 }
 
 // Roots returns a list of node that has zero dependency.

@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func RunGRPCServer() error {
+func runGRPCServer() error {
 	lis, err := net.Listen("tcp", ":3000")
 	if err != nil {
 		return err
@@ -35,11 +35,11 @@ func main() {
 	t1 := todo.AddTask("shower")
 	t2 := todo.AddTask("dry hair")
 	t3 := todo.AddTask("brush teeth")
+	t4 := todo.AddTask("termination")
 
-	todo.AddRelation(t1, t2, 1.25)
-	todo.AddRelation(t3, t2, 2)
+	todo.AddRelation(t1, t2, taskflow.Success)
+	todo.AddRelation(t3, t2, taskflow.Success)
+	todo.AddRelation(t2, t4, taskflow.Done)
 
-	todo.Traverse()
-	todo.Sort()
-	todo.Cycles()
+	taskflow.RunTodo(todo)
 }
